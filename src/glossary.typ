@@ -40,7 +40,10 @@
   /// -> string
   group: none,
 ) = {
-  assert(short != none, message: "short form of glossary-entry is mandatory")
+  assert(
+    short != none or long != none,
+    message: "short or long form of glossary-entry is mandatory",
+  )
 
   let entry = (
     key: key,
