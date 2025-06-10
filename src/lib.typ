@@ -209,7 +209,7 @@
   // main body
   {
     // scope i-figured to not interact with Glossarium
-    show: figures.numbering
+    show: figures.numbering()
 
     body
   }
