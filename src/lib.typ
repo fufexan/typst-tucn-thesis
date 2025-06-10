@@ -283,6 +283,8 @@
 
   // bibliography is outlined, and we use our own header for the label
   if bibliography != none {
+    set heading(outlined: true)
+
     bibliography
 
     context {
