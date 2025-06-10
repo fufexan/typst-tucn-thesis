@@ -7,7 +7,6 @@
 #let _authors = state("thesis-authors")
 #let _current_authors = state("thesis-current-authors", ())
 
-#import utils: chapter-end
 #import glossary: register-glossary, glossary-entry, gls, glspl
 
 /// The main template function. Your document will generally start with ```typ #show: thesis(...)```,
@@ -40,9 +39,6 @@
 ///   `only` (only the current authors are shown).
 /// - paper (string): Changes the paper format of the thesis. Use this option with care, as it will
 ///   shift various contents around.
-/// - strict-chapter-end (bool): This can be activated to ensure proper use of the
-///   @@chapter-end() function. It is disabled by default because it slows down compilation. See
-///   @@enforce-chapter-end-placement().
 /// -> function
 #let thesis(
   title: none,
@@ -58,7 +54,6 @@
   language: "en",
   current-authors: "highlight",
   paper: "a4",
-  strict-chapter-end: false,
 ) = body => {
   import "@preview/codly:1.0.0": codly, codly-init
   import "@preview/datify:0.1.2"
@@ -223,6 +218,8 @@
     },
   )
 
+  show: utils.mark-empty-pages()
+
   // front matter headings are not outlined
   set heading(outlined: false)
   // Heading supplements are section or chapter, depending on level
@@ -260,7 +257,6 @@
     set heading(outlined: true)
 
     glossary.print-glossary(title: [= #l10n.glossary <glossary>])
-    chapter-end()
   }
 
   // bibliography is outlined, and we use our own header for the label
@@ -270,7 +266,6 @@
 
     [= #l10n.bibliography <bibliography>]
     bibliography
-    chapter-end()
   }
 
   // List of {Figures, Tables, Listings} only shown if there are any such elements
@@ -280,7 +275,6 @@
       title: none,
       target-kind: image,
     )
-    chapter-end()
   }
 
   context if query(figure.where(kind: table)).len() != 0 {
@@ -289,7 +283,6 @@
       title: none,
       target-kind: table,
     )
-    chapter-end()
   }
 
   context if query(figure.where(kind: raw)).len() != 0 {
@@ -298,11 +291,6 @@
       title: none,
       target-kind: raw,
     )
-    chapter-end()
-  }
-
-  if strict-chapter-end {
-    utils.enforce-chapter-end-placement()
   }
 }
 
@@ -351,8 +339,6 @@
       })
       .join()
   )
-
-  #chapter-end()
 ]
 
 /// Set the authors writing the current part of the thesis. The footer will highlight the names of
@@ -388,8 +374,6 @@
   ]
 
   #body
-
-  #chapter-end()
 ]
 
 /// Starts the main matter of the thesis. This should be called as a show rule (```typ #show: main-matter()```) after the abstracts and will insert
@@ -400,7 +384,6 @@
 #let main-matter() = body => {
   [= #l10n.contents <contents>]
   outline(title: none)
-  chapter-end()
 
   set heading(outlined: true, numbering: "1.1")
 

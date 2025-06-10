@@ -20,7 +20,6 @@
 
   language: "en",
   current-authors: "only",
-  strict-chapter-end: true,
 )
 
 #include "glossaries.typ"
@@ -44,22 +43,13 @@
 #show: main-matter()
 
 #include "chapters/2_work_planning.typ"
-// in the main-matter, currently all chapters need to have an explicit `#chapter-end()` to ensure
-// correct headers and footers. This can hopefully be removed in the future
-// (see https://github.com/typst/typst/issues/2722, https://github.com/typst/typst/issues/4438)
-#chapter-end()
 
 #include "chapters/3_state_of_the_art.typ"
-#chapter-end()
 
 #include "chapters/4_theoretical_fundamentals.typ"
-#chapter-end()
 
 #include "chapters/5_implementation.typ"
-#chapter-end()
 
 #include "chapters/6_experimental_results.typ"
-#chapter-end()
 
 #include "chapters/7_conclusions.typ"
-#chapter-end()
