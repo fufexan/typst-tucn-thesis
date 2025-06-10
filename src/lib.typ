@@ -1,3 +1,4 @@
+#import "bib.typ" as bib: bibliography
 #import "l10n.typ"
 #import "glossary.typ" as glossary: (
   register-glossary,
@@ -5,12 +6,6 @@
   gls,
   glspl,
 )
-#import "bib.typ" as bib: bibliography
-
-#let _builtin_bibliography = bibliography
-
-#let _authors = state("thesis-authors")
-#let _current_authors = state("thesis-current-authors", ())
 
 /// The main template function. Your document will generally start with ```typ #show: thesis(...)```,
 /// which it already does after initializing the template. Although all parameters are named, most
@@ -65,10 +60,11 @@
   import "libs.typ": *
   import hydra: hydra, anchor
 
+  import "authors.typ" as _authors
   import "figures.typ"
   import "structure.typ"
 
-  assert(current-authors in ("highlight", "only"))
+  _authors.check-current-authors(current-authors)
 
   // basic document & typesetting setup
   set document(
@@ -84,7 +80,7 @@
   set page(margin: (x: 2.5cm, y: 2cm))
 
   // make properties accessible as state
-  _authors.update(authors)
+  _authors.set-authors(authors)
 
   // setup linguify
   l10n.set-database()
@@ -183,29 +179,25 @@
             grid(
               columns: (5fr, 1fr),
               align: (left + bottom, right + bottom),
-              if current-authors == "highlight" {
-                authors
-                  .map(author => {
-                    let is-current = author.name in _current_authors.get()
-                    let author = author.name
-                    if is-current {
-                      author = strong(author)
-                    }
-                    box(author)
-                  })
-                  .join[, ]
-              } else if current-authors == "only" {
-                authors
-                  .filter(author => {
-                    author.name in _current_authors.get()
-                  })
-                  .map(author => {
-                    let author = author.name
-                    box(author)
-                  })
-                  .join[, ]
-              } else {
-                panic("unreachable: current-authors not 'highlight' or 'only'")
+              {
+                let authors = _authors.get-names-and-current()
+                let authors = {
+                  if current-authors == "highlight" {
+                    authors.map(((author, is-current)) => {
+                      if is-current {
+                        author = strong(author)
+                      }
+                      author
+                    })
+                  } else if current-authors == "only" {
+                    authors
+                      .filter(((author, is-current)) => is-current)
+                      .map(((author, is-current)) => author)
+                  } else {
+                    panic("unreachable: current-authors not 'highlight' or 'only'")
+                  }
+                }
+                authors.map(box).join[, ]
               },
               counter(page).display("1 / 1", both: true),
             )
@@ -218,10 +210,10 @@
   show: structure.mark-empty-pages()
   show: structure.chapters-and-sections(
     chapter: l10n.chapter,
-    section: l10n.section
+    section: l10n.section,
   )
 
-  show structure.front-matter()
+  show: structure.front-matter()
 
   // main body
   {
@@ -278,6 +270,8 @@
   /// -> content
   body,
 ) = [
+  #import "authors.typ" as _authors
+
   #let caption-spacing = -0.2cm
 
   = #l10n.declaration-title <declaration>
@@ -288,7 +282,7 @@
 
   #context (
     _authors
-      .get()
+      .get-authors()
       .map(author => {
         show: block.with(breakable: false)
         set text(0.9em)
@@ -322,16 +316,9 @@
   /// -> arguments
   ..authors,
 ) = {
-  assert(authors.named().len() == 0, message: "named arguments not allowed")
-  let authors = authors.pos()
-  context {
-    let names = _authors.get().map(author => author.name)
-    for author in authors {
-      assert(author in names, message: "invalid author: " + author)
-    }
-  }
+  import "authors.typ" as _authors
 
-  _current_authors.update(authors)
+  _authors.set-current-authors(authors)
 }
 
 /// An abstract section. This should appear twice in the thesis regardless of language; first for
@@ -362,9 +349,7 @@
 #let main-matter() = body => {
   import "structure.typ"
 
-  show: structure.main-matter(
-    contents: l10n.contents,
-  )
+  show: structure.main-matter(contents: l10n.contents)
 
   body
 }
