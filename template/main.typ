@@ -16,6 +16,7 @@
   year: [2024/25],
   division: [Communications],
   // logo: assets.logo(width: 3cm),
+  read: path => read(path),
   bibliography: bibliography("bibliography.bib"),
 
   language: "en",
