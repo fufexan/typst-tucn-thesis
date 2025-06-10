@@ -82,11 +82,6 @@
   // setup linguify
   l10n.set-database()
 
-  // setup i-figured
-  show heading: i-figured.reset-counters
-  show figure: i-figured.show-figure
-  show math.equation: i-figured.show-equation
-
   // setup glossarium
   show: glossary.make-glossary
 
@@ -245,6 +240,11 @@
     }
     it
   }
+
+  // setup i-figured
+  show heading: i-figured.reset-counters
+  show figure: i-figured.show-figure
+  show math.equation: i-figured.show-equation
 
   // the body contains the declaration, abstracts, and then the main matter
 
