@@ -1,4 +1,4 @@
-#import "@preview/glossarium:0.5.0" as glossarium: (
+#import "@preview/glossarium:0.5.2" as glossarium: (
   make-glossary,
   gls,
   agls,
