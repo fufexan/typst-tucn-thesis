@@ -85,12 +85,12 @@ Before this section, the authors were set to _Arthur Dent_ and _Tricia McMillan_
 Figures, tables, code snippets, and similar independent content are often used to complement the body text. Two _lists_, or code snippets, were already used in the previous sections. Figures should normally be referenced in the body text so that their relevance to the content is explicitly clear. For example, the figure shown in @lst:figure-definition could be referenced using ```typ @fig:picture``. The references in this section use exactly this mechanism; in the PDF version of the work, these references are functioning links. The prefix `fig:` was inserted by the _i-figured_ package and determined based on the type of content, see @tbl:figure-kinds. This package also ensures that figures are numbered by chapter rather than consecutively.
 
 #figure(
-  ```typ
-  #figure(
-    image(...),
-    caption: [A picture],
-  ) <picture>
-  ```,
+```typ
+#figure(
+  image("../assets/logo.png"),
+  caption: [A picture],
+) <picture>
+```,
   placement: auto,
   caption: [Definition of a figure],
 ) <figure-definition>
@@ -103,9 +103,9 @@ Figures, tables, code snippets, and similar independent content are often used t
       [Supplement], [Contents], [Prefix], [Note],
     ),
     [Figure], [```typ image()```], [`fig:`], [Default image type for other content],
-    [Table], [```typ table()```], [`tbl:`], [],
-    [Listing], [```typ raw()```], [`lst:`], [```typ raw()``` also has the special syntax ```typ `...` ``` or ````typ ```...``` ````],
-    [Equation], [```typ math.equation()```], [`eqt:`], [```typ math.equation()``` also has the special syntax ```typ $ ... $````],
+[Table], [```typ table()```], [`tbl:`], [],
+[Listing], [```typ raw()```], [`lst:`], [```typ raw()``` also has the special syntax ```typ `...` ``` or ```typ ...```],
+[Equation], [```typ math.equation()```], [`eqt:`], [```typ math.equation()``` also has the special syntax ```typ $ ... $```],
   ),
   placement: auto,
   caption: [Types of figures and their prefixes in _i-figured_],
@@ -122,13 +122,13 @@ Relevant Documentation:
 - #highlighted-link("https://typst.app/docs/reference/model/figure/")[```typc figure()```]
 - #highlighted-link("https://typst.app/docs/reference/foundations/label/")[```typ <...>``` or ```typc label()```]
 - #highlighted-link("https://typst.app/docs/reference/model/table/")[```typc table()```]
-- #highlighted-link("https://typst.app/docs/reference/text/raw/")[````typ ```...``` ```` or ```typc raw()```]
+- #highlighted-link("https://typst.app/docs/reference/text/raw/")[````typ ```...``` or ```typc raw()```]
 - #highlighted-link("https://typst.app/docs/reference/math/equation/")[```typ $ ... $``` or ```typc math.equation()```]
 - #highlighted-link("https://typst.app/universe/package/i-figured/0.2.4/")[the i-figured package]
 
 == Internal References <internal-references>
 
-In addition to references to sources, figures, and glossary entries, the ```typ @key`` syntax can also be used to reference chapters and sections. Since this chapter is labeled ```typ <preface>```, it's easy to insert a reference using ```typ @preface``, for example: @preface. A reference to @internal-references, which contains this text, works the same way. In the PDF, these references are also links.
+In addition to references to sources, figures, and glossary entries, the ```typ @key`` syntax can also be used to reference chapters and sections. Since this chapter is labeled ```typ <preface>```, it's easy to insert a reference using ```typ @preface```, for example: @preface. A reference to @internal-references, which contains this text, works the same way. In the PDF, these references are also links.
 
 Some parts of the thesis are labeled by the template and can therefore be referenced if necessary:- @declaration
 

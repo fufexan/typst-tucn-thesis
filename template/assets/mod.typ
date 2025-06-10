@@ -1,1 +1,1 @@
-#let logo = image.with("logo.png")
+// #let logo = image.with("logo.png")
