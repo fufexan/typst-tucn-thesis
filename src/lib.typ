@@ -1,5 +1,10 @@
 #import "l10n.typ"
-#import "glossary.typ"
+#import "glossary.typ" as glossary: (
+  register-glossary,
+  glossary-entry,
+  gls,
+  glspl,
+)
 #import "bib.typ" as bib: bibliography
 #import "utils.typ"
 
@@ -7,8 +12,6 @@
 
 #let _authors = state("thesis-authors")
 #let _current_authors = state("thesis-current-authors", ())
-
-#import glossary: register-glossary, glossary-entry, gls, glspl
 
 /// The main template function. Your document will generally start with ```typ #show: thesis(...)```,
 /// which it already does after initializing the template. Although all parameters are named, most
