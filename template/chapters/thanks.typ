@@ -1,5 +1,5 @@
 #import "../lib.typ": *
 
-= Danksagung
+= Thanks
 
 #lorem(150)

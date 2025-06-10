@@ -1,6 +1,6 @@
 #import "../lib.typ": *
 
-#abstract(lang: "de")[
+#abstract(lang: "ro")[
   #lorem(150)
 ]
 
