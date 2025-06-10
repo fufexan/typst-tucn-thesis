@@ -1,17 +1,21 @@
-# TGM HIT diploma thesis template
+# TUCN ETTI diploma thesis template
 
-This is a port of the [LaTeX diploma thesis template](https://github.com/TGM-HIT/diploma-thesis) available for students of the information technology department at the TGM technical secondary school in Vienna.
+This is a fork of the [TGM-HIT typst diploma thesis](https://github.com/TGM-HIT/typst-diploma-thesis/). Not everything was ported over. Check their (awesome) documentation in case you get stuck.
 
 ## Getting Started
 
-Using the Typst web app, you can create a project by e.g. using this link: https://typst.app/?template=tgm-hit-thesis&version=latest.
+TODO: finish and upload to typst packages.
+
+1. Clone this repo somewhere.
+2. `mkdir -p $XDG_DATA_HOME/typst/packages/local/tucn-diploma-thesis`
+3. `ln -s path/to/repo $XDG_DATA_HOME/typst/packages/local/tucn-diploma-thesis/0.1.0`
 
 To work locally, use the following command:
 
 ```bash
-typst init @preview/tgm-hit-thesis
+typst init @local/tucn-diploma-thesis
 ```
 
 ## Usage
 
-The template ([rendered PDF](example.pdf)) contains thesis writing advice (in German) as example content. If you are looking for the details of this template package's function, take a look at the [manual](docs/manual.pdf).
+The template contains the thesis structure as defined by the ETTI faculty, as well as writing advice as example content.
