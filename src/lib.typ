@@ -63,9 +63,9 @@
   paper: "a4",
 ) = body => {
   import "libs.typ": *
-  import codly: codly, codly-init
   import hydra: hydra, anchor
 
+  import "figures.typ"
   import "structure.typ"
 
   assert(current-authors in ("highlight", "only"))
@@ -95,10 +95,6 @@
   // setup Alexandria
   show: bib.alexandria.alexandria(prefix: "cite:", read: read)
 
-  // setup codly & listing styles
-  show: codly-init.with()
-  show figure.where(kind: raw): block.with(width: 95%)
-
   // outline style
   show outline.where(target: selector(heading)): it => {
     show outline.entry: outrageous.show-entry.with(font: (auto,))
@@ -111,22 +107,14 @@
   // general styles
 
   // figure supplements
-  show figure.where(kind: image): set figure(supplement: l10n.figure)
-  show figure.where(kind: table): set figure(supplement: l10n.table)
-  show figure.where(kind: raw): set figure(supplement: l10n.listing)
+  show: figures.figure-style(supplement: l10n.figure)
+  show: figures.figure-style(supplement: l10n.table)
+  show: figures.figure-style(supplement: l10n.listing)
 
   show quote.where(block: false): it => {
     it
     if it.attribution != none [ #it.attribution]
   }
-
-  // table & line styles
-  set line(stroke: 0.1mm)
-  set table(
-    stroke: (x, y) => if y == 0 {
-      (bottom: 0.1mm)
-    },
-  )
 
   // references to non-numbered headings
   show: structure.plain-heading-refs()
@@ -235,14 +223,10 @@
 
   show structure.front-matter()
 
-  // main body with i-figured
-  // scope i-figured to not interact with Glossarium
+  // main body
   {
-    show heading: i-figured.reset-counters
-    show figure: i-figured.show-figure
-    show math.equation: i-figured.show-equation
-
-    // the body contains the declaration, abstracts, and then the main matter
+    // scope i-figured to not interact with Glossarium
+    show: figures.numbering
 
     body
   }
@@ -272,29 +256,12 @@
   // List of {Figures, Tables, Listings}
   {
     show: structure.back-matter-lists()
-    context if query(figure.where(kind: image)).len() != 0 {
-      [= #l10n.list-of-figures <list-of-figures>]
-      i-figured.outline(
-        title: none,
-        target-kind: image,
-      )
-    }
 
-    context if query(figure.where(kind: table)).len() != 0 {
-      [= #l10n.list-of-tables <list-of-tables>]
-      i-figured.outline(
-        title: none,
-        target-kind: table,
-      )
-    }
-
-    context if query(figure.where(kind: raw)).len() != 0 {
-      [= #l10n.list-of-listings <list-of-listings>]
-      i-figured.outline(
-        title: none,
-        target-kind: raw,
-      )
-    }
+    figures.outlines(
+      figures: [= #l10n.list-of-figures <list-of-figures>],
+      tables: [= #l10n.list-of-tables <list-of-tables>],
+      listings: [= #l10n.list-of-listings <list-of-listings>],
+    )
   }
 }
 
