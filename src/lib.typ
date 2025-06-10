@@ -1,4 +1,3 @@
-#import "assets.typ"
 #import "l10n.typ"
 #import "glossary.typ"
 #import "utils.typ"
