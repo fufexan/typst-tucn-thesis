@@ -35,37 +35,30 @@ list-of-tables = "List of Tables"
 list-of-listings = "List of Listings"
 glossary = "Glossary"
 
-[lang.de]
-thesis = "Diplomarbeit"
-supervisor = "Betreuer"
-performed-in-year = "Ausgeführt im Schuljahr"
-submission-note = "Abgabevermerk"
-approved = "Übernommen von"
+[lang.ro]
+thesis = "Lucrare de licență"
+supervisor = "Coordonator"
+performed-in-year = "Realizată în anul"
+submission-note = "Nota"
+approved = "Aprobat"
 
-declaration-title = "Eidesstattliche Erklärung"
+declaration-title = "Declarație pe proprie răspundere"
 # declaration-text = """
-# Ich erkläre an Eides statt, dass ich die vorliegende Arbeit selbstständig \
-# verfasst, andere als die angegebenen Quellen/Hilfsmittel nicht benutzt und die \
-# den benutzten Quellen wörtlich und inhaltlich entnommenen Stellen als solche \
-# kenntlich gemacht habe.
+# TODO
 # """
-# declaration-ai-clause = """
-# Für die Erstellung der Arbeit habe ich auch folgende Hilfsmittel generativer \
-# KI-Tools [z. B. ChatGPT, Grammarly Go, Midjourney] zu folgendem Zweck verwendet:
-# """
-location-date = "Ort, Datum"
+location-date = "Locație, Dată"
 
-chapter = "Kapitel"
-section = "Abschnitt"
-abstract = "Kurzfassung"
+chapter = "Capitol"
+section = "Secțiune"
+abstract = "Abstract"
 
-figure = "Abbildung"
-table = "Tabelle"
-listing = "Auflistung"
+figure = "Figura"
+table = "Tabelul"
+listing = "Listarea"
 
-contents = "Inhaltsverzeichnis"
-bibliography = "Literaturverzeichnis"
-list-of-figures = "Abbildungsverzeichnis"
-list-of-tables = "Tabellenverzeichnis"
-list-of-listings = "Auflistungsverzeichnis"
-glossary = "Glossar"
+contents = "Cuprins"
+bibliography = "Bibliografie"
+list-of-figures = "Listă figuri"
+list-of-tables = "Listă tabele"
+list-of-listings = "Listă listări"
+glossary = "Glosar"
