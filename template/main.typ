@@ -1,38 +1,35 @@
 #import "lib.typ": *
 
 #show: thesis(
-  title: [Keine Panik!],
-  subtitle: [Mit Typst durch die Diplomarbeit],
+  title: [TUCN Thesis],
+  subtitle: [Diploma thesis written in Typst],
   authors: (
-    // ATTENTION: chapters/vorwort.typ:76 references this list of example authors. When changing
-    // this list, you need to adjust/remove that line!
-    (name: "Arthur Dent", class: [5xHIT], subtitle: [Untertitel des Themengebiets von Arthur Dent]),
-    (name: "Ford Prefect", class: [5xHIT], subtitle: [Untertitel des Themengebiets von Ford Prefect]),
-    (name: "Tricia McMillan", class: [5xHIT], subtitle: [Untertitel des Themengebiets von Tricia McMillan]),
-    (name: "Zaphod Beeblebrox", class: [5xHIT], subtitle: [Untertitel des Themengebiets von Zaphod Beeblebrox]),
+    (
+      name: "Mihai Fufezan",
+      class: [5xHIT],
+      subtitle: [Subtitle of the subject area by Mihai Fufezan],
+    ),
   ),
-  // the German default supervisor label is the non-gendered "Betreuer", so you can override it here
-  // as necessary
-  supervisor-label: [Betreuer:in],
-  supervisor: [DSc MSc Deep Thought],
-  date: datetime(year: 2018, month: 4, day: 4),
-  year: [2017/18],
-  division: [Medientechnik, Systemtechnik],
-  logo: assets.logo(width: 3cm),
+  supervisor-label: [Coordinator:in],
+  supervisor: [As.Drd.Ing. Supervisor],
+  date: datetime(year: 2025, month: 7, day: 1),
+  year: [2024/25],
+  division: [Communications],
+  // logo: assets.logo(width: 3cm),
   bibliography: bibliography("bibliography.bib"),
 
-  // language: "en",
-  // current-authors: "only",
-  // strict-chapter-end: true,
+  language: "en",
+  current-authors: "only",
+  strict-chapter-end: true,
 )
 
 #include "glossaries.typ"
 
 #declaration(context if text.lang == "de" [
-  Ich erkläre an Eides statt, dass ich die vorliegende Arbeit selbstständig verfasst, andere als die angegebenen Quellen/Hilfsmittel nicht benutzt und die den benutzten Quellen wörtlich und inhaltlich entnommenen Stellen als solche kenntlich gemacht habe.
-  Für die Erstellung der Arbeit habe ich auch folgende Hilfsmittel generativer KI-Tools [z. B. ChatGPT, Grammarly Go, Midjourney] zu folgendem Zweck verwendet:
+  Declar că am scris această lucrare independent, că nu am folosit alte surse decât cele declarate și că am marcat explicit tot materialul care a fost citat, ori literal, ori prin conținut din sursele folosite.
+  De asemenea, am folosit următoarele unelte IA generative (de exemplu ChatGPT, Grammarly Go, Midjourney) pentru următoarele scopuri:
 
-  - ChatGPT: eigentlich für eh alles
+  - ChatGPT: practic pentru tot
 ] else if text.lang == "en" [
   I declare that I have authored this thesis independently, that I have not used other than the declared sources and that I have explicitly marked all material which has been quoted either literally or by content from the used sources.
   I also used the following generative AI tools [e.g. ChatGPT, Grammarly Go, Midjourney] for the following purpose:
@@ -42,33 +39,27 @@
   panic("no statutory declaration for that language!")
 })
 
-#include "chapters/kurzfassung.typ"
+#include "chapters/1_abstract.typ"
 
 #show: main-matter()
 
-#include "chapters/vorwort.typ"
+#include "chapters/2_work_planning.typ"
 // in the main-matter, currently all chapters need to have an explicit `#chapter-end()` to ensure
 // correct headers and footers. This can hopefully be removed in the future
 // (see https://github.com/typst/typst/issues/2722, https://github.com/typst/typst/issues/4438)
 #chapter-end()
 
-#include "chapters/danksagung.typ"
+#include "chapters/3_state_of_the_art.typ"
 #chapter-end()
 
-#include "chapters/einleitung.typ"
+#include "chapters/4_theoretical_fundamentals.typ"
 #chapter-end()
 
-#include "chapters/studie.typ"
+#include "chapters/5_implementation.typ"
 #chapter-end()
 
-#include "chapters/konzept.typ"
+#include "chapters/6_experimental_results.typ"
 #chapter-end()
 
-#include "chapters/implementierung.typ"
-#chapter-end()
-
-#include "chapters/retrospektive.typ"
-#chapter-end()
-
-#include "chapters/conclusio.typ"
+#include "chapters/7_conclusions.typ"
 #chapter-end()
