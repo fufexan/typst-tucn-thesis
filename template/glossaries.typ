@@ -2,15 +2,25 @@
 
 #register-glossary(
   glossary-entry(
-    "ac:tgm",
-    short: "TGM",
-    long: "Technologisches Gewerbemuseum",
-    // group: "Accronyms",
+    "utcn",
+    short: "UTCN",
+    long: "Universitatea Tehnică din Cluj-Napoca",
+    // group: "Acronyms",
   ),
   glossary-entry(
-    "syt",
-    short: "SYT",
-    long: "Systemtechnik",
-    desc: ["Als Systemtechnik bezeichnet man verschiedene Aufbau- und Verbindungstechniken, aber auch eine Fachrichtung der Ingenieurwissenschaften. Er bedeutet in der Unterscheidung zu den Mikrotechnologien die Verbindung verschiedener einzelner Module eines Systems und deren Konzeption." @wiki:syt]
+    "etti",
+    short: "ETTI",
+    long: "Faculatea de Electronică, Telecomunicații și Tehnologia Informației",
+  ),
+  glossary-entry(
+    "tucn",
+    short: "TUCN",
+    long: "Technical University of Cluj-Napoca",
+    // group: "Acronyms",
+  ),
+  glossary-entry(
+    "etit",
+    short: "ETIT",
+    long: "Faculty of Electronics, Telecommunications, and Information Technology",
   ),
 )
