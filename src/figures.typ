@@ -60,7 +60,7 @@
 ///
 /// -> function
 #let numbering() = body => {
-  import "libs.typ": i-figured
+  import "libs.typ": i-figured, outrageous
 
   show heading: i-figured.reset-counters
   show figure: i-figured.show-figure
@@ -91,6 +91,10 @@
     (image, figures),
     (table, tables),
     (raw, listings),
+  )
+
+  show outline.entry: outrageous.show-entry.with(
+    ..outrageous.presets.outrageous-figures,
   )
 
   for (kind, title) in kinds {

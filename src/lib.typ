@@ -91,15 +91,6 @@
   // setup Alexandria
   show: bib.alexandria.alexandria(prefix: "cite:", read: read)
 
-  // outline style
-  show outline.where(target: selector(heading)): it => {
-    show outline.entry: outrageous.show-entry.with(font: (auto,))
-    it
-  }
-  show outline.entry: outrageous.show-entry.with(
-    ..outrageous.presents.outrageous-figures,
-  )
-
   // general styles
 
   // figure supplements

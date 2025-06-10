@@ -87,8 +87,16 @@
   /// -> content
   section: none,
 ) = body => {
-  assert.ne(chapter, none, message: "Chapter supplement not set")
-  assert.ne(section, none, message: "Section supplement not set")
+  import "libs.typ": outrageous
+
+  assert.ne(chapter, none, message: "Outline title not set")
+
+  {
+    show outline.entry: outrageous.show-entry.with(font: (auto,))
+
+    [= #contents <contents>]
+    outline(title: none)
+  }
 
   // Heading supplements are section or chapter, depending on level
   show heading: set heading(supplement: section)
