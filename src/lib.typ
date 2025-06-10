@@ -56,8 +56,7 @@
   division: none,
   logo: none,
   bibliography: none,
-
-  language: "de",
+  language: "en",
   current-authors: "highlight",
   paper: "a4",
   strict-chapter-end: false,
@@ -81,7 +80,7 @@
   set par(justify: true)
 
   // title page settings - must come before the first content (e.g. state update)
-  set page(margin: (x: 1in, top: 1in, bottom: 0.75in))
+  set page(margin: (x: 2.5cm, y: 2cm))
 
   // make properties accessible as state
   _authors.update(authors)
@@ -103,9 +102,7 @@
 
   // outline style
   set outline(indent: auto)
-  show outline.entry: outrageous.show-entry.with(
-    font: (auto,),
-  )
+  show outline.entry: outrageous.show-entry.with(font: (auto,))
 
   // general styles
 
@@ -116,9 +113,11 @@
 
   // table & line styles
   set line(stroke: 0.1mm)
-  set table(stroke: (x, y) => if y == 0 {
-    (bottom: 0.1mm)
-  })
+  set table(
+    stroke: (x, y) => if y == 0 {
+      (bottom: 0.1mm)
+    },
+  )
 
   // references to non-numbered headings
   show ref: it => {
@@ -129,92 +128,13 @@
     link(it.target, it.element.body)
   }
 
-  // title page
-
-  {
-    // header
-    grid(
-      columns: (auto, 1fr, auto),
-      align: center+horizon,
-      assets.tgm-logo(width: 3.1cm),
-      {
-        set text(1.2em)
-        [Technologisches Gewerbemuseum]
-        parbreak()
-        set text(0.77em)
-        [Höhere Technische Lehranstalt für Informationstechnologie]
-        if division != none {
-          linebreak()
-          [Schwerpunkt #division]
-        }
-      },
-      assets.htl-logo(width: 3.1cm),
-    )
-    line(length: 100%)
-
-    v(1fr)
-
-    // title & subtitle
-    align(center, {
-      if logo != none {
-        logo
-        v(0.5em)
-      }
-      text(1.44em, weight: "bold")[#l10n.thesis]
-      v(-0.5em)
-      text(2.49em, weight: "bold")[#title]
-      if subtitle != none {
-        v(-0.7em)
-        text(1.44em)[#subtitle]
-      }
-    })
-
-    v(1fr)
-
-    // authors & supervisor
-    authors.map(author => {
-      grid(
-        columns: (4fr, 6fr),
-        row-gutter: 0.8em,
-        grid.cell(colspan: 2, author.subtitle),
-        author.name,
-        author.class,
-      )
-    }).join(v(0.7em))
-    v(2em)
-    if supervisor-label == auto {
-      supervisor-label = l10n.supervisor
-    }
-    [
-      *#supervisor-label:* #supervisor \
-      #l10n.performed-in-year #year
-    ]
-
-    // footer
-    let date-formats = (
-      "en": "Month DD, YYYY",
-      "de": "DD. Month YYYY",
-    )
-
-    line(length: 100%)
-    [
-      #l10n.submission-note: \
-      #context if text.lang in date-formats {
-        datify.custom-date-format(date, date-formats.at(text.lang))
-      } else {
-        date.display()
-      }
-      #h(1fr)
-      #l10n.approved:
-      #h(3cm)
-    ]
-  }
+  // title page not included as it is a separate PDF you have to complete
 
   // regular page setup
 
   // show header & footer on "content" pages, show only page number in chapter title pages
   set page(
-    margin: (x: 1in, y: 1.5in),
+    margin: (x: 2.5cm, y: 2cm),
     header-ascent: 15%,
     footer-descent: 15%,
     header: context {
@@ -225,23 +145,28 @@
       } else {
         hydra(
           1,
-          prev-filter: (ctx, candidates) => candidates.primary.prev.outlined == true,
+          prev-filter: (ctx, candidates) => (
+            candidates.primary.prev.outlined == true
+          ),
           display: (ctx, candidate) => {
             grid(
               columns: (auto, 1fr),
               column-gutter: 3em,
-              align: (left+top, right+top),
+              align: (left + top, right + top),
               title,
               {
                 set par(justify: false)
                 if candidate.has("numbering") and candidate.numbering != none {
                   l10n.chapter
                   [ ]
-                  numbering(candidate.numbering, ..counter(heading).at(candidate.location()))
+                  numbering(
+                    candidate.numbering,
+                    ..counter(heading).at(candidate.location()),
+                  )
                   [. ]
                 }
                 candidate.body
-              }
+              },
             )
             line(length: 100%)
           },
@@ -259,28 +184,35 @@
       } else {
         hydra(
           1,
-          prev-filter: (ctx, candidates) => candidates.primary.prev.outlined == true,
+          prev-filter: (ctx, candidates) => (
+            candidates.primary.prev.outlined == true
+          ),
           display: (ctx, candidate) => {
             line(length: 100%)
             grid(
               columns: (5fr, 1fr),
-              align: (left+bottom, right+bottom),
+              align: (left + bottom, right + bottom),
               if current-authors == "highlight" {
-                authors.map(author => {
-                  let is-current = author.name in _current_authors.get()
-                  let author = author.name
-                  if is-current {
-                    author = strong(author)
-                  }
-                  box(author)
-                }).join[, ]
+                authors
+                  .map(author => {
+                    let is-current = author.name in _current_authors.get()
+                    let author = author.name
+                    if is-current {
+                      author = strong(author)
+                    }
+                    box(author)
+                  })
+                  .join[, ]
               } else if current-authors == "only" {
-                authors.filter(author => {
-                  author.name in _current_authors.get()
-                }).map(author => {
-                  let author = author.name
-                  box(author)
-                }).join[, ]
+                authors
+                  .filter(author => {
+                    author.name in _current_authors.get()
+                  })
+                  .map(author => {
+                    let author = author.name
+                    box(author)
+                  })
+                  .join[, ]
               } else {
                 panic("unreachable: current-authors not 'highlight' or 'only'")
               },
@@ -395,26 +327,31 @@
 
   #v(0.2cm)
 
-  #context _authors.get().map(author => {
-    show: block.with(breakable: false)
-    set text(0.9em)
-    grid(
-      columns: (4fr, 6fr),
-      align: center,
-      [
-        #v(signature-height)
-        #line(length: 80%)
-        #v(caption-spacing)
-        #l10n.location-date
-      ],
-      [
-        #v(signature-height)
-        #line(length: 80%)
-        #v(caption-spacing)
-        #author.name
-      ],
-    )
-  }).join()
+  #context (
+    _authors
+      .get()
+      .map(author => {
+        show: block.with(breakable: false)
+        set text(0.9em)
+        grid(
+          columns: (4fr, 6fr),
+          align: center,
+          [
+            #v(signature-height)
+            #line(length: 80%)
+            #v(caption-spacing)
+            #l10n.location-date
+          ],
+          [
+            #v(signature-height)
+            #line(length: 80%)
+            #v(caption-spacing)
+            #author.name
+          ],
+        )
+      })
+      .join()
+  )
 
   #chapter-end()
 ]
@@ -438,7 +375,7 @@
 }
 
 /// An abstract section. This should appear twice in the thesis regardless of language; first for
-/// the German _Kurzfassung_, then for the English abstract.
+/// the Romanian abstract, then for the English abstract.
 ///
 /// - lang (string): The language of this abstract. Although it defaults to ```typc auto```, in
 ///   which case the document's language is used, it's preferable to always set the language
