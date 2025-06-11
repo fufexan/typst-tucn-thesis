@@ -91,29 +91,40 @@
   assert.ne(section, none, message: "Section supplement not set")
 
   // Heading supplements are section or chapter, depending on level
-  show heading: set heading(supplement: section)
+  show heading: set heading(supplement: section, numbering: "1.1.")
   show heading.where(level: 1): set heading(supplement: chapter)
 
-  // chapters start on a right page and have very big, fancy headings
+  // Chapter starts have numbered headings
   show heading.where(level: 1): it => {
-    set text(1.3em)
-    pagebreak(to: "odd")
-    v(12%)
-    if it.numbering != none [
-      #it.supplement #counter(heading).display()
-      #parbreak()
-    ]
-    set text(1.3em)
-    it.body
-    v(1cm)
-  }
-
-  // the first section of a chapter starts on the next page
-  show heading.where(level: 2): it => {
-    if is-first-section() {
+    // Chapters start on new pages, except the first
+    if (
+      query(
+        selector(heading.where(level: 1)).before(
+          it.location(),
+          inclusive: false,
+        ),
+      ).len()
+        != 0
+    ) {
       pagebreak()
     }
-    it
+    v(30pt)
+    set align(center)
+    text(it, size: 16pt, weight: "bold")
+    // it
+    v(24pt)
+  }
+
+  show heading.where(level: 2): it => {
+    v(24pt)
+    text(it, size: 14pt, weight: "bold")
+    v(12pt)
+  }
+
+  show heading.where(level: 3): it => {
+    v(18pt)
+    text(it, size: 14pt, weight: "bold")
+    v(12pt)
   }
 
   body
@@ -143,13 +154,16 @@
   assert.ne(contents, none, message: "Outline title not set")
 
   {
-    show outline.entry: outrageous.show-entry.with(font: (auto,))
+    show outline.entry: outrageous.show-entry.with(
+      ..outrageous.presets.typst,
+      font-weight: ("bold", auto),
+    )
 
-    [= #contents <contents>]
+    heading([Contents], numbering: none)
     outline(title: none)
   }
 
-  set heading(outlined: true, numbering: "1.1")
+  set heading(outlined: true, numbering: "1.1.")
 
   body
 }
