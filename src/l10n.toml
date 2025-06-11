@@ -48,9 +48,9 @@ declaration-title = "Declarație pe proprie răspundere"
 # """
 location-date = "Locație, Dată"
 
-chapter = "Capitol"
-section = "Secțiune"
-abstract = "Abstract"
+chapter = "Capitolul"
+section = "Secțiunea"
+abstract = "Rezumat în limba română"
 
 figure = "Figura"
 table = "Tabelul"
