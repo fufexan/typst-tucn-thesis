@@ -47,9 +47,9 @@
   /// The (Alexandria) bibliography (```typc bibliography()```) to use for the thesis.  /// The bibliography (```typc bibliography()```) to use for the thesis.
   /// -> content
   bibliography: none,
-  /// The language in which the thesis is written. `"de"` and `"en"` are supported. The choice of language influences certain texts on the title page and in headings, as well as the date format used on the title page.
+  /// The language in which the thesis is written. `"ro"` and `"en"` are supported. The choice of language influences certain texts on the title page and in headings, as well as the date format used on the title page.
   /// -> string
-  language: "de",
+  language: "ro",
   /// The mode used to show the current authors in the footer; see @@set-current-authors(). This can be `highlight` (all authors are shown, some *strong*) or `only` (only the current authors are shown).
   /// -> string
   current-authors: "highlight",
@@ -73,7 +73,7 @@
     date: date,
   )
   set page(paper: paper)
-  set text(lang: language)
+  set text(lang: language, font: "Times New Roman")
   set par(justify: true)
 
   // title page settings - must come before the first content (e.g. state update)
@@ -116,9 +116,7 @@
     header-ascent: 15%,
     footer-descent: 15%,
     header: context {
-      if structure.is-chapter-page() {
-        // no header
-      } else if structure.is-empty-page() {
+      if structure.is-empty-page() {
         // no header
       } else {
         hydra(
@@ -127,37 +125,56 @@
             candidates.primary.prev.outlined == true
           ),
           display: (ctx, candidate) => {
-            grid(
-              columns: (auto, 1fr),
-              column-gutter: 3em,
-              align: (left + top, right + top),
-              title,
-              {
-                set par(justify: false)
-                if candidate.has("numbering") and candidate.numbering != none {
-                  l10n.chapter
-                  [ ]
-                  numbering(
-                    candidate.numbering,
-                    ..counter(heading).at(candidate.location()),
-                  )
-                  [. ]
-                }
-                candidate.body
-              },
+            stack(
+              spacing: 5pt,
+              grid(
+                columns: (auto, 1fr),
+                column-gutter: 3em,
+                align: (left + top, right + top),
+                // title,
+                {
+                  set par(justify: false)
+                  // if candidate.has("numbering") and candidate.numbering != none {
+                  //   l10n.chapter
+                  //   [ ]
+                  //   numbering(
+                  //     candidate.numbering,
+                  //     ..counter(heading).at(candidate.location()),
+                  //   )
+                  //   [. ]
+                  // }
+                  candidate.body
+                },
+                {
+                  let authors = _authors.get-names-and-current()
+                  let authors = {
+                    if current-authors == "highlight" {
+                      authors.map(((author, is-current)) => {
+                        if is-current {
+                          author = strong(author)
+                        }
+                        author
+                      })
+                    } else if current-authors == "only" {
+                      authors
+                        .filter(((author, is-current)) => is-current)
+                        .map(((author, is-current)) => author)
+                    } else {
+                      panic("unreachable: current-authors not 'highlight' or 'only'")
+                    }
+                  }
+                  emph(authors.map(box).join[, ])
+                },
+              ),
+              line(length: 100%, stroke: 0.5pt + black),
             )
-            line(length: 100%)
           },
         )
         anchor()
       }
     },
     footer: context {
-      if structure.is-chapter-page() {
-        align(center)[
-          #counter(page).display("1")
-        ]
-      } else if structure.is-empty-page() {
+      if structure.is-empty-page() {
         // no footer
       } else {
         hydra(
@@ -166,31 +183,14 @@
             candidates.primary.prev.outlined == true
           ),
           display: (ctx, candidate) => {
-            line(length: 100%)
-            grid(
-              columns: (5fr, 1fr),
-              align: (left + bottom, right + bottom),
-              {
-                let authors = _authors.get-names-and-current()
-                let authors = {
-                  if current-authors == "highlight" {
-                    authors.map(((author, is-current)) => {
-                      if is-current {
-                        author = strong(author)
-                      }
-                      author
-                    })
-                  } else if current-authors == "only" {
-                    authors
-                      .filter(((author, is-current)) => is-current)
-                      .map(((author, is-current)) => author)
-                  } else {
-                    panic("unreachable: current-authors not 'highlight' or 'only'")
-                  }
-                }
-                authors.map(box).join[, ]
-              },
-              counter(page).display("1 / 1", both: true),
+            stack(
+              spacing: 5pt,
+              line(length: 100%, stroke: 0.5pt + black),
+              grid(
+                columns: (5fr, 1fr),
+                align: (left + bottom, right + bottom),
+                { "" }, counter(page).display("1"),
+              ),
             )
           },
         )
@@ -198,13 +198,13 @@
     },
   )
 
-  show: structure.mark-empty-pages()
+  // show: structure.mark-empty-pages()
   show: structure.chapters-and-sections(
     chapter: l10n.chapter,
     section: l10n.section,
   )
 
-  show: structure.front-matter()
+  // show: structure.front-matter()
 
   // main body
   {
@@ -248,56 +248,6 @@
   }
 }
 
-/// The statutory declaration that the thesis was written without improper help. The text is not
-/// part of the template so that it can be adapted according to one's needs. Example texts are given
-/// in the template. Heading and signature lines for each author are inserted automatically.
-///
-/// -> content
-#let declaration(
-  /// The height of the signature line. The default should be able to fit up to seven authors on one page; for larger teams, the height can be decreased.
-  /// -> length
-  signature-height: 1.1cm,
-  /// The actual declaration.
-  /// -> content
-  body,
-) = [
-  #import "authors.typ" as _authors
-
-  #let caption-spacing = -0.2cm
-
-  = #l10n.declaration-title <declaration>
-
-  #body
-
-  #v(0.2cm)
-
-  #context (
-    _authors
-      .get-authors()
-      .map(author => {
-        show: block.with(breakable: false)
-        set text(0.9em)
-        grid(
-          columns: (4fr, 6fr),
-          align: center,
-          [
-            #v(signature-height)
-            #line(length: 80%)
-            #v(caption-spacing)
-            #l10n.location-date
-          ],
-          [
-            #v(signature-height)
-            #line(length: 80%)
-            #v(caption-spacing)
-            #author.name
-          ],
-        )
-      })
-      .join()
-  )
-]
-
 /// Set the authors writing the current part of the thesis. The footer will highlight the names of
 /// the given authors until a new list of authors is given with this function.
 ///
@@ -312,8 +262,7 @@
   _authors.set-current-authors(authors)
 }
 
-/// An abstract section. This should appear twice in the thesis regardless of language; first for
-/// the Romanian abstract, then for the English abstract.
+/// An abstract section. This should appear once in the thesis in Romanian if the thesis was written in an international language, or in English if the thesis was written in Romanian.
 ///
 #let abstract(
   /// The language of this abstract. Although it defaults to ```typc auto```, in which case the document's language is used, it's preferable to always set the language explicitly.
@@ -325,9 +274,7 @@
 ) = [
   #set text(lang: lang) if lang != auto
 
-  #context [
-    #[= #l10n.abstract] #label("abstract-" + text.lang)
-  ]
+  #heading(l10n.abstract, numbering: none)
 
   #body
 ]
