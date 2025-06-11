@@ -22,7 +22,8 @@ location-date = "Location, Date"
 
 chapter = "Chapter"
 section = "Section"
-abstract = "Abstract"
+# Should be in the opposite language (here, "ro")
+abstract = "Rezumat în limba română"
 
 figure = "Figure"
 table = "Table"
@@ -50,7 +51,8 @@ location-date = "Locație, Dată"
 
 chapter = "Capitolul"
 section = "Secțiunea"
-abstract = "Rezumat în limba română"
+# Should be in the opposite language (here, "en")
+abstract = "Abstract"
 
 figure = "Figura"
 table = "Tabelul"
