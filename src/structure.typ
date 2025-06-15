@@ -154,10 +154,7 @@
   assert.ne(contents, none, message: "Outline title not set")
 
   {
-    show outline.entry: outrageous.show-entry.with(
-      ..outrageous.presets.typst,
-      font-weight: ("bold", auto),
-    )
+    show outline.entry: outrageous.show-entry.with(..outrageous.presets.typst)
 
     heading([Contents], numbering: none)
     outline(title: none)
