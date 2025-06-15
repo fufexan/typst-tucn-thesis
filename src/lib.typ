@@ -187,13 +187,37 @@
     },
   )
 
-  // show: structure.mark-empty-pages()
   show: structure.chapters-and-sections(
     chapter: l10n.chapter,
     section: l10n.section,
   )
 
-  // show: structure.front-matter()
+  show: structure.main-matter(contents: l10n.contents)
+
+  // List of {Figures, Tables, Listings}
+  {
+    show: structure.back-matter-lists()
+
+    figures.outlines(
+      figures: [#heading(
+          l10n.list-of-figures,
+          numbering: none,
+        ) <list-of-figures>],
+      tables: [#heading(l10n.list-of-tables, numbering: none) <list-of-tables>],
+      listings: [#heading(
+          l10n.list-of-listings,
+          numbering: none,
+        ) <list-of-listings>],
+    )
+  }
+
+  // Glossary
+  {
+    show: structure.back-matter-references()
+    glossary.print-glossary(
+      title: [#heading(l10n.glossary, numbering: none) <glossary>],
+    )
+  }
 
   // main body
   {
@@ -201,13 +225,6 @@
     show: figures.numbering()
 
     body
-  }
-
-  // back matter: references
-  {
-    show: structure.back-matter-references()
-
-    glossary.print-glossary(title: [= #l10n.glossary <glossary>])
   }
 
   if bibliography != none {
@@ -221,17 +238,6 @@
         title: none,
       )
     }
-  }
-
-  // List of {Figures, Tables, Listings}
-  {
-    show: structure.back-matter-lists()
-
-    figures.outlines(
-      figures: [= #l10n.list-of-figures <list-of-figures>],
-      tables: [= #l10n.list-of-tables <list-of-tables>],
-      listings: [= #l10n.list-of-listings <list-of-listings>],
-    )
   }
 }
 
@@ -266,15 +272,3 @@
   #body
 ]
 
-/// Starts the main matter of the thesis. This should be called as a show rule (```typ #show: main-matter()```) after the abstracts and will insert
-/// the table of contents. All subsequent top level headings will be treated as chapters and thus be
-/// numbered and outlined.
-///
-/// -> function
-#let main-matter() = body => {
-  import "structure.typ"
-
-  show: structure.main-matter(contents: l10n.contents)
-
-  body
-}
