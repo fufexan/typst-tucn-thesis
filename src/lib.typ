@@ -74,10 +74,16 @@
   )
   set page(paper: paper)
   set text(lang: language, font: "Times New Roman", size: 12pt)
-  set par(justify: true, spacing: 1em)
+  set block(spacing: 1em)
+  set par(
+    justify: true,
+    spacing: 1em,
+    leading: 0.5em,
+    // first-line-indent: 1.75em,
+  )
 
   // title page settings - must come before the first content (e.g. state update)
-  set page(margin: (x: 2.5cm, y: 2cm))
+  set page(margin: (x: 2.2cm, y: 2cm))
 
   // make properties accessible as state
   _authors.set-authors(authors)
@@ -106,13 +112,11 @@
   // references to non-numbered headings
   show: structure.plain-heading-refs()
 
-  // title page not included as it is a separate PDF you have to complete
-
   // regular page setup
 
-  // show header & footer on "content" pages, show only page number in chapter title pages
+  // header & footer
   set page(
-    margin: (x: 2.5cm, y: 2cm),
+    margin: (x: 2.2cm, y: 2cm),
     header-ascent: 15%,
     footer-descent: 15%,
     header: context {
