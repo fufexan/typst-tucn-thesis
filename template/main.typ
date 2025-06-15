@@ -1,4 +1,5 @@
 #import "lib.typ": *
+#include "glossaries.typ"
 
 #show: thesis(
   title: [TUCN Thesis],
@@ -22,10 +23,6 @@
   language: "en",
   // current-authors: "only",
 )
-
-#include "glossaries.typ"
-
-#show: main-matter()
 
 #include "chapters/abstract.typ"
 
