@@ -90,10 +90,6 @@
   assert.ne(chapter, none, message: "Chapter supplement not set")
   assert.ne(section, none, message: "Section supplement not set")
 
-  // Heading supplements are section or chapter, depending on level
-  show heading: set heading(supplement: section, numbering: "1.1.")
-  show heading.where(level: 1): set heading(supplement: chapter)
-
   // Chapter starts have numbered headings
   show heading.where(level: 1): it => {
     // Chapters start on new pages, except the first
@@ -108,35 +104,24 @@
     ) {
       pagebreak()
     }
-    v(30pt)
+    v(30pt, weak: true)
     set align(center)
     text(it, size: 16pt, weight: "bold")
     // it
-    v(24pt)
+    v(24pt, weak: true)
   }
 
   show heading.where(level: 2): it => {
-    v(24pt)
+    v(24pt, weak: true)
     text(it, size: 14pt, weight: "bold")
-    v(12pt)
+    v(12pt, weak: true)
   }
 
   show heading.where(level: 3): it => {
-    v(18pt)
-    text(it, size: 14pt, weight: "bold")
-    v(12pt)
+    v(18pt, weak: true)
+    text(it, size: 13pt, weight: "bold")
+    v(12pt, weak: true)
   }
-
-  body
-}
-
-/// Applies show rules for the front matter. It's intended that this wraps the _whole_ document;
-/// starting the main matter will override the rules applied here.
-///
-/// -> function
-#let front-matter() = body => {
-  // front matter headings are not outlined
-  set heading(outlined: false)
 
   body
 }
