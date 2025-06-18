@@ -101,8 +101,8 @@
 
   // figure supplements
   show: figures.figure-style(supplement: l10n.figure)
-  show: figures.figure-style(supplement: l10n.table)
-  show: figures.figure-style(supplement: l10n.listing)
+  show: figures.table-style(supplement: l10n.table)
+  show: figures.listing-style(supplement: l10n.listing)
 
   show quote.where(block: false): it => {
     it
@@ -199,15 +199,9 @@
     show: structure.back-matter-lists()
 
     figures.outlines(
-      figures: [#heading(
-          l10n.list-of-figures,
-          numbering: none,
-        ) <list-of-figures>],
-      tables: [#heading(l10n.list-of-tables, numbering: none) <list-of-tables>],
-      listings: [#heading(
-          l10n.list-of-listings,
-          numbering: none,
-        ) <list-of-listings>],
+      figures: l10n.list-of-figures,
+      tables: l10n.list-of-tables,
+      listings: l10n.list-of-listings,
     )
   }
 
@@ -219,13 +213,7 @@
     )
   }
 
-  // main body
-  {
-    // scope i-figured to not interact with Glossarium
-    show: figures.numbering()
-
-    body
-  }
+  body
 
   if bibliography != none {
     bibliography

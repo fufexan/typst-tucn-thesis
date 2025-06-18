@@ -44,30 +44,20 @@
   /// -> content
   supplement: none,
 ) = body => {
-  import "libs.typ": codly.codly-init
+  import "libs.typ": codly, codly-languages.codly-languages
 
   assert.ne(supplement, none, message: "Listing supplement not set")
 
   show figure.where(kind: raw): set figure(supplement: supplement)
 
-  show: codly-init.with()
+  show: codly.codly-init.with()
+  codly.codly(languages: codly-languages)
   show figure.where(kind: raw): block.with(width: 95%)
 
   body
 }
 
-/// Applies show rules for chapter-wise figure numbering.
-///
-/// -> function
-#let numbering() = body => {
-  import "libs.typ": i-figured, outrageous
-
-  show heading: i-figured.reset-counters
-  show figure: i-figured.show-figure
-  show math.equation: i-figured.show-equation
-
-  body
-}/// Shows the outlines for the three kinds of figures, if such figures exist.
+/// Shows the outlines for the three kinds of figures, if such figures exist.
 ///
 /// -> content
 #let outlines(
@@ -81,8 +71,6 @@
   /// -> content
   listings: none,
 ) = {
-  import "libs.typ": i-figured, outrageous
-
   assert.ne(figures, none, message: "List of figures title not set")
   assert.ne(tables, none, message: "List of tables title not set")
   assert.ne(listings, none, message: "List of listings title not set")
@@ -93,14 +81,13 @@
     (raw, listings),
   )
 
-  show outline.entry: outrageous.show-entry.with(
-    ..outrageous.presets.outrageous-figures,
-  )
-
   for (kind, title) in kinds {
     context if query(figure.where(kind: kind)).len() != 0 {
-      title
-      i-figured.outline(title: none, target-kind: kind)
+      heading(title, numbering: none)
+      outline(
+        title: none,
+        target: figure.where(kind: kind),
+      )
     }
   }
 }
