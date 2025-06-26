@@ -209,9 +209,42 @@
 
   // Glossary
   {
-    show: structure.back-matter-references()
     glossary.print-glossary(
       title: [#heading(l10n.glossary, numbering: none) <glossary>],
+      disable-back-references: true,
+      user-print-glossary: (entries, groups, ..) => {
+        table(
+          columns: 3,
+          stroke: 0pt,
+          inset: (x: 0.5em, y: 0.25em),
+          ..for group in groups {
+            (
+              table.cell(group, colspan: 3),
+              ..for entry in entries
+                .filter(x => x.group == group)
+                .sorted(key: it => (it.short, it.long)) {
+                (
+                  entry.short,
+                  entry.long,
+                  [
+                    #figure(
+                      kind: "glossarium_figure",
+                      supplement: "",
+                      caption: entry.description,
+                    )[]
+                    #label(entry.key)
+                    #figure(
+                      kind: "glossarium_figure",
+                      supplement: "",
+                    )[]
+                    #label(entry.key + ":pl")
+                  ],
+                )
+              },
+            )
+          }
+        )
+      },
     )
   }
 
