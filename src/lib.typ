@@ -99,10 +99,13 @@
 
   // general styles
 
+  // figure caption separator
+  set figure.caption(separator: [. ])
+
   // figure supplements
   show: figures.figure-style(supplement: l10n.figure)
   show: figures.table-style(supplement: l10n.table)
-  show: figures.listing-style(supplement: l10n.listing)
+  show: figures.listing-style(supplement: l10n.figure)
 
   show quote.where(block: false): it => {
     it
@@ -201,7 +204,6 @@
     figures.outlines(
       figures: l10n.list-of-figures,
       tables: l10n.list-of-tables,
-      listings: l10n.list-of-listings,
     )
   }
 

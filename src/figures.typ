@@ -67,27 +67,26 @@
   /// The tables outline title
   /// -> content
   tables: none,
-  /// The listings outline title
-  /// -> content
-  listings: none,
 ) = {
   assert.ne(figures, none, message: "List of figures title not set")
   assert.ne(tables, none, message: "List of tables title not set")
-  assert.ne(listings, none, message: "List of listings title not set")
 
-  let kinds = (
-    (image, figures),
-    (table, tables),
-    (raw, listings),
-  )
+  context if query(figure.where(kind: table)).len() != 0 {
+    heading(tables, numbering: none)
+    outline(
+      title: none,
+      target: figure.where(kind: table),
+    )
+  }
 
-  for (kind, title) in kinds {
-    context if query(figure.where(kind: kind)).len() != 0 {
-      heading(title, numbering: none)
-      outline(
-        title: none,
-        target: figure.where(kind: kind),
-      )
-    }
+  context if (
+    query(figure.where(kind: image)).len() != 0
+      or query(figure.where(kind: raw)).len() != 0
+  ) {
+    heading(figures, numbering: none)
+    outline(
+      title: none,
+      target: figure.where(kind: image).or(figure.where(kind: raw)),
+    )
   }
 }
