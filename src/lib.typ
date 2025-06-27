@@ -212,32 +212,46 @@
     glossary.print-glossary(
       title: [#heading(l10n.glossary, numbering: none) <glossary>],
       disable-back-references: true,
+      // look through glossarium's code if you want to change this
       user-print-glossary: (entries, groups, ..) => {
         table(
-          columns: 3,
+          columns: 2,
           stroke: 0pt,
-          inset: (x: 0.5em, y: 0.25em),
+          inset: (x: 1em, y: 0.4em),
           ..for group in groups {
             (
-              table.cell(group, colspan: 3),
+              table.cell(group, colspan: 2),
               ..for entry in entries
                 .filter(x => x.group == group)
                 .sorted(key: it => (it.short, it.long)) {
                 (
                   entry.short,
-                  entry.long,
                   [
                     #figure(
-                      kind: "glossarium_figure",
+                      entry.long,
+                      kind: "glossarium_entry",
+                      numbering: none,
                       supplement: "",
-                      caption: entry.description,
-                    )[]
-                    #label(entry.key)
+                    )#label(entry.key)
+                    // The line below adds a ref shorthand for plural form, e.g., "@term:pl"
                     #figure(
-                      kind: "glossarium_figure",
+                      kind: "glossarium_entry",
                       supplement: "",
-                    )[]
-                    #label(entry.key + ":pl")
+                    )[]#label(entry.key + ":pl")
+                    // Same as above, but for capitalized form, e.g., "@Term"
+                    // Skip if key is already capitalized
+                    #if upper(entry.key.at(0)) != entry.key.at(0) {
+                      [
+                        #figure(
+                          kind: "glossarium_entry",
+                          supplement: "",
+                        )[]#label(glossary.__capitalize(entry.key))
+                        #figure(
+                          kind: "glossarium_entry",
+                          supplement: "",
+                        )[]#label(glossary.__capitalize(entry.key) + ":pl")
+                      ]
+                    }
                   ],
                 )
               },

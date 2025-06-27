@@ -80,3 +80,8 @@
 
   glossarium.print-glossary(entries, ..args)
 }
+
+#let __capitalize(text) = {
+  if text == none { return text }
+  return upper(text.first()) + text.slice(1)
+}
