@@ -114,6 +114,9 @@
     if it.attribution != none [ #it.attribution]
   }
 
+  // Number equations
+  set math.equation(numbering: "(1)", supplement: l10n.equation)
+
   // references to non-numbered headings
   show: structure.plain-heading-refs()
 

@@ -23,6 +23,7 @@
 #let figure = linguify("figure")
 #let table = linguify("table")
 #let listing = linguify("listing")
+#let equation = linguify("equation")
 
 #let contents = linguify("contents")
 #let bibliography = linguify("bibliography")
