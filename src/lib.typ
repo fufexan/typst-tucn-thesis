@@ -102,10 +102,12 @@
   // figure caption separator
   set figure.caption(separator: [. ])
 
+  // combine code and images into Figures to share the same counter
+  show figure.where(kind: raw): set figure(kind: image)
+
   // figure supplements
   show: figures.figure-style(supplement: l10n.figure)
   show: figures.table-style(supplement: l10n.table)
-  show: figures.listing-style(supplement: l10n.figure)
 
   show quote.where(block: false): it => {
     it

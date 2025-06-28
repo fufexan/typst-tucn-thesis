@@ -10,6 +10,11 @@
 
   show figure.where(kind: image): set figure(supplement: supplement)
 
+  import "libs.typ": codly, codly-languages.codly-languages
+
+  show: codly.codly-init.with()
+  codly.codly(languages: codly-languages)
+
   body
 }
 
@@ -32,27 +37,6 @@
       (bottom: 0.1mm)
     },
   )
-
-  body
-}
-
-/// Applies show rules for listing (kind: raw) styling.
-///
-/// -> function
-#let listing-style(
-  /// The listing supplement
-  /// -> content
-  supplement: none,
-) = body => {
-  import "libs.typ": codly, codly-languages.codly-languages
-
-  assert.ne(supplement, none, message: "Listing supplement not set")
-
-  show figure.where(kind: raw): set figure(supplement: supplement)
-
-  show: codly.codly-init.with()
-  codly.codly(languages: codly-languages)
-  show figure.where(kind: raw): block.with(width: 95%)
 
   body
 }
@@ -81,12 +65,11 @@
 
   context if (
     query(figure.where(kind: image)).len() != 0
-      or query(figure.where(kind: raw)).len() != 0
   ) {
     heading(figures, numbering: none)
     outline(
       title: none,
-      target: figure.where(kind: image).or(figure.where(kind: raw)),
+      target: figure.where(kind: image),
     )
   }
 }
