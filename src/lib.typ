@@ -216,7 +216,7 @@
               table.cell(group, colspan: 2),
               ..for entry in entries
                 .filter(x => x.group == group)
-                .sorted(key: it => (it.short, it.long)) {
+                .sorted(key: it => (lower(it.short), lower(it.long))) {
                 (
                   entry.short,
                   [
