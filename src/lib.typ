@@ -1,10 +1,7 @@
 #import "bib.typ" as bib: bibliography
 #import "l10n.typ"
 #import "glossary.typ" as glossary: (
-  register-glossary,
-  glossary-entry,
-  gls,
-  glspl,
+  glossary-entry, gls, glspl, register-glossary,
 )
 
 /// The main template function. Your document will generally start with ```typ #show: thesis(...)```,
@@ -58,7 +55,7 @@
   paper: "a4",
 ) = body => {
   import "libs.typ": *
-  import hydra: hydra, anchor
+  import hydra: anchor, hydra
 
   import "authors.typ" as _authors
   import "figures.typ"
@@ -131,45 +128,43 @@
       if structure.is-empty-page() {
         // no header
       } else {
-        hydra(
-          1,
-          use-last: true,
-          display: (ctx, candidate) => {
-            stack(
-              spacing: 5pt,
-              grid(
-                columns: (auto, 1fr),
-                column-gutter: 3em,
-                align: (left + top, right + top),
-                {
-                  set par(justify: false)
-                  candidate.body
-                },
-                {
-                  let authors = _authors.get-names-and-current()
-                  let authors = {
-                    if current-authors == "highlight" {
-                      authors.map(((author, is-current)) => {
-                        if is-current {
-                          author = strong(author)
-                        }
-                        author
-                      })
-                    } else if current-authors == "only" {
-                      authors
-                        .filter(((author, is-current)) => is-current)
-                        .map(((author, is-current)) => author)
-                    } else {
-                      panic("unreachable: current-authors not 'highlight' or 'only'")
-                    }
+        hydra(1, use-last: true, display: (ctx, candidate) => {
+          stack(
+            spacing: 5pt,
+            grid(
+              columns: (auto, 1fr),
+              column-gutter: 3em,
+              align: (left + top, right + top),
+              {
+                set par(justify: false)
+                candidate.body
+              },
+              {
+                let authors = _authors.get-names-and-current()
+                let authors = {
+                  if current-authors == "highlight" {
+                    authors.map(((author, is-current)) => {
+                      if is-current {
+                        author = strong(author)
+                      }
+                      author
+                    })
+                  } else if current-authors == "only" {
+                    authors
+                      .filter(((author, is-current)) => is-current)
+                      .map(((author, is-current)) => author)
+                  } else {
+                    panic(
+                      "unreachable: current-authors not 'highlight' or 'only'",
+                    )
                   }
-                  emph(authors.map(box).join[, ])
-                },
-              ),
-              line(length: 100%, stroke: 0.5pt + black),
-            )
-          },
-        )
+                }
+                emph(authors.map(box).join[, ])
+              },
+            ),
+            line(length: 100%, stroke: 0.5pt + black),
+          )
+        })
         anchor()
       }
     },
@@ -177,20 +172,13 @@
       if structure.is-empty-page() {
         // no footer
       } else {
-        hydra(
-          1,
-          display: (ctx, candidate) => {
-            stack(
-              spacing: 5pt,
-              line(length: 100%, stroke: 0.5pt + black),
-              grid(
-                columns: (5fr, 1fr),
-                align: (left + bottom, right + bottom),
-                "", counter(page).display("1"),
-              ),
-            )
-          },
-        )
+        hydra(1, display: (ctx, candidate) => {
+          stack(spacing: 5pt, line(length: 100%, stroke: 0.5pt + black), grid(
+            columns: (5fr, 1fr),
+            align: (left + bottom, right + bottom),
+            "", counter(page).display("1"),
+          ))
+        })
       }
     },
   )
