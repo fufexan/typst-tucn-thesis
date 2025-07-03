@@ -1,4 +1,4 @@
-/// Applies show rules for regular figure (kind: image) styling.Add commentMore actions
+/// Applies show rules for regular figure (kind: image) styling.
 ///
 /// -> function
 #let figure-style(
@@ -32,11 +32,9 @@
 
   // table & line styles
   set line(stroke: 0.1mm)
-  set table(
-    stroke: (x, y) => if y == 0 {
-      (bottom: 0.1mm)
-    },
-  )
+  set table(stroke: (x, y) => if y == 0 {
+    (bottom: 0.1mm)
+  })
 
   body
 }
@@ -55,21 +53,33 @@
   assert.ne(figures, none, message: "List of figures title not set")
   assert.ne(tables, none, message: "List of tables title not set")
 
+  show outline.entry: it => {
+    let entry-label = it.fields().at("label", default: none)
+    if entry-label == <no-prefix> {
+      return it
+    }
+
+    let elem = it.element
+    let new-entry = link(it.element.location(), it.indented(
+      {
+        [#it.element.caption.supplement ]
+        numbering(it.element.numbering, ..it.element.counter.at(
+          it.element.location(),
+        ))
+        // Separator
+        [. ]
+      },
+      it.inner(),
+    ))
+    [#new-entry<no-prefix>]
+  }
   context if query(figure.where(kind: table)).len() != 0 {
     heading(tables, numbering: none)
-    outline(
-      title: none,
-      target: figure.where(kind: table),
-    )
+    outline(title: none, target: figure.where(kind: table))
   }
 
-  context if (
-    query(figure.where(kind: image)).len() != 0
-  ) {
+  context if (query(figure.where(kind: image)).len() != 0) {
     heading(figures, numbering: none)
-    outline(
-      title: none,
-      target: figure.where(kind: image),
-    )
+    outline(title: none, target: figure.where(kind: image))
   }
 }
