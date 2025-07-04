@@ -1,5 +1,6 @@
 #import "bib.typ" as bib: bibliography
 #import "l10n.typ"
+#import "libs.typ" as libs
 #import "glossary.typ" as glossary: (
   glossary-entry, gls, glspl, register-glossary,
 )
@@ -92,7 +93,7 @@
   show: glossary.make-glossary
 
   // setup Alexandria
-  show: bib.alexandria.alexandria(prefix: "cite:", read: read)
+  // show: bib.alexandria.alexandria(prefix: "cite:", read: read)
 
   // general styles
 
@@ -257,18 +258,19 @@
 
   body
 
-  if bibliography != none {
-    bibliography
+  // TODO: find a way to reorder this
+  // if bibliography != none {
+  //   bibliography
 
-    context {
-      let bibl = bib.alexandria.get-bibliography(auto)
-      [= #l10n.bibliography <bibliography>]
-      bib.alexandria.render-bibliography(
-        bibl,
-        title: none,
-      )
-    }
-  }
+  //   context {
+  //     let bibl = bib.alexandria.get-bibliography(auto)
+  //     [= #l10n.bibliography <bibliography>]
+  //     bib.alexandria.render-bibliography(
+  //       bibl,
+  //       title: none,
+  //     )
+  //   }
+  // }
 }
 
 /// Set the authors writing the current part of the thesis. The footer will highlight the names of
@@ -296,8 +298,9 @@
   body,
 ) = [
   #set text(lang: lang) if lang != auto
+  #set heading(numbering: none, outlined: false)
 
-  #heading(l10n.abstract, numbering: none)
+  // #heading(l10n.abstract, outlined: true)
 
   #body
 ]
