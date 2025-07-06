@@ -70,6 +70,10 @@
     author: authors.map(author => author.name).join(", "),
     date: date,
   )
+
+  // Set page counter at 8, as the first 8 pages are external and will be
+  // prepended to this document
+  counter(page).update(9)
   set page(paper: paper)
   set text(lang: language, font: "Times New Roman", size: 12pt)
   set block(spacing: 1em)
