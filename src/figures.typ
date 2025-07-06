@@ -29,6 +29,7 @@
   assert.ne(supplement, none, message: "Table supplement not set")
 
   show figure.where(kind: table): set figure(supplement: supplement)
+  show figure.where(kind: table): set figure.caption(position: top)
 
   // table & line styles
   set line(stroke: 0.1mm)
